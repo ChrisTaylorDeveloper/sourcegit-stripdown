@@ -59,7 +59,7 @@ namespace SourceGit.Native
             if (string.IsNullOrEmpty(osAppDataDir))
                 DataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".sourcegit");
             else
-                DataDir = Path.Combine(osAppDataDir, "SourceGit");
+                DataDir = Path.Combine(osAppDataDir, App.AppName);
 
             if (!Directory.Exists(DataDir))
                 Directory.CreateDirectory(DataDir);
