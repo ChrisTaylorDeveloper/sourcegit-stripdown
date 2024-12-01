@@ -22,6 +22,9 @@ namespace SourceGit
 {
     public partial class App : Application
     {
+        // TODO: Should I use a Property here?
+        public const string AppName = "SourceGitStripdown";
+
         [STAThread]
         public static void Main(string[] args)
         {
