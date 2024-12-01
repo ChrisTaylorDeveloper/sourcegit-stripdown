@@ -1,4 +1,4 @@
-﻿namespace SourceGit.Commands
+namespace SourceGit.Commands
 {
     public class Revert : Command
     {
