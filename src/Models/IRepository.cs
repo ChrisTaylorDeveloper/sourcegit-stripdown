@@ -1,4 +1,4 @@
-﻿namespace SourceGit.Models
+namespace SourceGit.Models
 {
     public interface IRepository
     {

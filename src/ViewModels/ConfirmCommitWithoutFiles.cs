@@ -1,4 +1,4 @@
-﻿namespace SourceGit.ViewModels
+namespace SourceGit.ViewModels
 {
     public class ConfirmCommitWithoutFiles
     {

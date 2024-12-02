@@ -8,26 +8,14 @@
              x:DataType="vm:Welcome">
   <Grid ColumnDefinitions="Auto,*,Auto" Margin="4,0">
     <StackPanel Grid.Column="0" Orientation="Horizontal">
-      <Button Classes="icon_button" Width="32" Command="{Binding Clone}" ToolTip.Tip="{DynamicResource Text.Welcome.Clone}">
-        <Path Width="16" Height="16" Data="{StaticResource Icons.Clone}" Margin="0,4,0,0"/>
-      </Button>
-
       <Button Classes="icon_button" Width="32" Click="OpenLocalRepository" ToolTip.Tip="{DynamicResource Text.Welcome.OpenOrInit}">
         <Path Width="14" Height="14" Data="{StaticResource Icons.Folder.Open}" Margin="0,2,0,0"/>
       </Button>
-
-      <Button Classes="icon_button" Width="32" Command="{Binding OpenTerminal}" ToolTip.Tip="{DynamicResource Text.Welcome.OpenTerminal}">
-        <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
-      </Button>      
     </StackPanel>
 
     <StackPanel Grid.Column="2" Orientation="Horizontal">
       <Button Classes="icon_button" Width="32" Command="{Binding AddRootNode}" ToolTip.Tip="{DynamicResource Text.Welcome.AddRootFolder}">
         <Path Width="14" Height="14" Margin="0,2,0,0" Data="{StaticResource Icons.Folder.Add}"/>
-      </Button>
-      
-      <Button Classes="icon_button" Width="32" Command="{Binding ScanDefaultCloneDir}" ToolTip.Tip="{DynamicResource Text.Welcome.ScanDefaultCloneDir}">
-        <Path Width="14" Height="14" Data="{StaticResource Icons.Scan}"/>
       </Button>
     </StackPanel>
   </Grid>
