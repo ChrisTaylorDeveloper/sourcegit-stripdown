@@ -102,10 +102,9 @@
               </ListBoxItem>
 
               <ListBoxItem>
-                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto">
-                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Changes}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.WorkingCopy}"/>
-                  <v:CounterPresenter Grid.Column="2"
+                <Grid Classes="view_mode" ColumnDefinitions="Auto,Auto">
+                  <TextBlock Grid.Column="0" Classes="primary" Text="{DynamicResource Text.WorkingCopy}"/>
+                  <v:CounterPresenter Grid.Column="1"
                                       Margin="6,0"
                                       VerticalAlignment="Center"
                                       Count="{Binding LocalChangesCount}"
@@ -130,6 +129,7 @@
                                       Background="{DynamicResource Brush.Badge}"/>
                 </Grid>
               </ListBoxItem>
+
             </ListBox>
           </Border>
         </Border>
