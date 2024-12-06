@@ -102,7 +102,7 @@
               </ListBoxItem>
 
               <ListBoxItem>
-                <Grid Classes="view_mode" ColumnDefinitions="Auto,Auto">
+                <Grid Classes="view_mode" ColumnDefinitions="*,Auto">
                   <TextBlock Grid.Column="0" Classes="primary" Text="{DynamicResource Text.WorkingCopy}"/>
                   <v:CounterPresenter Grid.Column="1"
                                       Margin="6,0"
