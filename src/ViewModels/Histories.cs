@@ -338,16 +338,7 @@ namespace SourceGit.ViewModels
 
             if (current.Head != commit.SHA)
             {
-                var reset = new MenuItem();
-                reset.Header = new Views.NameHighlightedTextBlock("CommitCM.Reset", current.Name);
-                reset.Icon = App.CreateMenuIcon("Icons.Reset");
-                reset.Click += (_, e) =>
-                {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Reset(_repo, current, commit));
-                    e.Handled = true;
-                };
-                menu.Items.Add(reset);
+                // Add reset menu item was here ...
             }
             else
             {
