@@ -262,42 +262,6 @@ namespace SourceGit.ViewModels
                     multipleMenu.Items.Add(new MenuItem() { Header = "-" });
                 }
 
-                var saveToPatchMultiple = new MenuItem();
-                saveToPatchMultiple.Icon = App.CreateMenuIcon("Icons.Diff");
-                saveToPatchMultiple.Header = App.Text("CommitCM.SaveAsPatch");
-                saveToPatchMultiple.Click += async (_, e) =>
-                {
-                    var storageProvider = App.GetStorageProvider();
-                    if (storageProvider == null)
-                        return;
-
-                    var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-                    try
-                    {
-                        var picker = await storageProvider.OpenFolderPickerAsync(options);
-                        if (picker.Count == 1)
-                        {
-                            var succ = false;
-                            for (var i = 0; i < selected.Count; i++)
-                            {
-                                var saveTo = GetPatchFileName(picker[0].Path.LocalPath, selected[i], i);
-                                succ = await Task.Run(() => new Commands.FormatPatch(_repo.FullPath, selected[i].SHA, saveTo).Exec());
-                                if (!succ)
-                                    break;
-                            }
-
-                            if (succ)
-                                App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
-                        }
-                    }
-                    catch (Exception exception)
-                    {
-                        App.RaiseException(_repo.FullPath, $"Failed to save as patch: {exception.Message}");
-                    }
-
-                    e.Handled = true;
-                };
-                multipleMenu.Items.Add(saveToPatchMultiple);
                 multipleMenu.Items.Add(new MenuItem() { Header = "-" });
 
                 var copyMultipleSHAs = new MenuItem();
@@ -374,35 +338,7 @@ namespace SourceGit.ViewModels
 
             if (current.Head != commit.SHA)
             {
-                var reset = new MenuItem();
-                reset.Header = new Views.NameHighlightedTextBlock("CommitCM.Reset", current.Name);
-                reset.Icon = App.CreateMenuIcon("Icons.Reset");
-                reset.Click += (_, e) =>
-                {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Reset(_repo, current, commit));
-                    e.Handled = true;
-                };
-                menu.Items.Add(reset);
-
-                var squash = new MenuItem();
-                squash.Header = App.Text("CommitCM.SquashCommitsSinceThis");
-                squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
-                squash.IsVisible = commit.IsMerged;
-                squash.Click += (_, e) =>
-                {
-                    if (_repo.LocalChangesCount > 0)
-                    {
-                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
-                        return;
-                    }
-
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Squash(_repo, commit, commit.SHA));
-
-                    e.Handled = true;
-                };
-                menu.Items.Add(squash);
+                // Add reset menu item was here ...
             }
             else
             {
@@ -422,29 +358,6 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(reword);
-
-                var squash = new MenuItem();
-                squash.Header = App.Text("CommitCM.Squash");
-                squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
-                squash.IsEnabled = commit.Parents.Count == 1;
-                squash.Click += (_, e) =>
-                {
-                    if (_repo.LocalChangesCount > 0)
-                    {
-                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
-                        return;
-                    }
-
-                    if (commit.Parents.Count == 1)
-                    {
-                        var parent = _commits.Find(x => x.SHA == commit.Parents[0]);
-                        if (parent != null && PopupHost.CanCreatePopup())
-                            PopupHost.ShowPopup(new Squash(_repo, parent, commit.SHA));
-                    }
-
-                    e.Handled = true;
-                };
-                menu.Items.Add(squash);
             }
 
             if (!commit.IsMerged)
@@ -491,40 +404,6 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(cherryPick);
-            }
-            else
-            {
-                var revert = new MenuItem();
-                revert.Header = App.Text("CommitCM.Revert");
-                revert.Icon = App.CreateMenuIcon("Icons.Undo");
-                revert.Click += (_, e) =>
-                {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Revert(_repo, commit));
-                    e.Handled = true;
-                };
-                menu.Items.Add(revert);
-
-                var interactiveRebase = new MenuItem();
-                interactiveRebase.Header = new Views.NameHighlightedTextBlock("CommitCM.InteractiveRebase", current.Name);
-                interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
-                interactiveRebase.IsVisible = current.Head != commit.SHA;
-                interactiveRebase.Click += (_, e) =>
-                {
-                    if (_repo.LocalChangesCount > 0)
-                    {
-                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
-                        return;
-                    }
-
-                    App.OpenDialog(new Views.InteractiveRebase()
-                    {
-                        DataContext = new InteractiveRebase(_repo, current, commit)
-                    });
-
-                    e.Handled = true;
-                };
-                menu.Items.Add(interactiveRebase);
             }
 
             if (current.Head != commit.SHA)
@@ -594,47 +473,7 @@ namespace SourceGit.ViewModels
             };
             menu.Items.Add(createBranch);
 
-            var createTag = new MenuItem();
-            createTag.Icon = App.CreateMenuIcon("Icons.Tag.Add");
-            createTag.Header = App.Text("CreateTag");
-            createTag.Click += (_, e) =>
-            {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new CreateTag(_repo, commit));
-                e.Handled = true;
-            };
-            menu.Items.Add(createTag);
             menu.Items.Add(new MenuItem() { Header = "-" });
-
-            var saveToPatch = new MenuItem();
-            saveToPatch.Icon = App.CreateMenuIcon("Icons.Diff");
-            saveToPatch.Header = App.Text("CommitCM.SaveAsPatch");
-            saveToPatch.Click += async (_, e) =>
-            {
-                var storageProvider = App.GetStorageProvider();
-                if (storageProvider == null)
-                    return;
-
-                var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-                try
-                {
-                    var selected = await storageProvider.OpenFolderPickerAsync(options);
-                    if (selected.Count == 1)
-                    {
-                        var saveTo = GetPatchFileName(selected[0].Path.LocalPath, commit);
-                        var succ = new Commands.FormatPatch(_repo.FullPath, commit.SHA, saveTo).Exec();
-                        if (succ)
-                            App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
-                    }
-                }
-                catch (Exception exception)
-                {
-                    App.RaiseException(_repo.FullPath, $"Failed to save as patch: {exception.Message}");
-                }
-
-                e.Handled = true;
-            };
-            menu.Items.Add(saveToPatch);
 
             var archive = new MenuItem();
             archive.Icon = App.CreateMenuIcon("Icons.Archive");
@@ -1052,35 +891,6 @@ namespace SourceGit.ViewModels
             submenu.Items.Add(delete);
 
             menu.Items.Add(submenu);
-        }
-
-        private string GetPatchFileName(string dir, Models.Commit commit, int index = 0)
-        {
-            var ignore_chars = new HashSet<char> { '/', '\\', ':', ',', '*', '?', '\"', '<', '>', '|', '`', '$', '^', '%', '[', ']', '+', '-' };
-            var builder = new StringBuilder();
-            builder.Append(index.ToString("D4"));
-            builder.Append('-');
-
-            var chars = commit.Subject.ToCharArray();
-            var len = 0;
-            foreach (var c in chars)
-            {
-                if (!ignore_chars.Contains(c))
-                {
-                    if (c == ' ' || c == '\t')
-                        builder.Append('-');
-                    else
-                        builder.Append(c);
-
-                    len++;
-
-                    if (len >= 48)
-                        break;
-                }
-            }
-            builder.Append(".patch");
-
-            return System.IO.Path.Combine(dir, builder.ToString());
         }
 
         private Repository _repo = null;
