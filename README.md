@@ -1,10 +1,8 @@
 # SourceGit Stripdown
 
-Fork of https://github.com/sourcegit-scm/sourcegit  
+This repository is a fork of https://github.com/sourcegit-scm/sourcegit  
 
-Objective, to slowly remove all functionality and leave only the graph and diff views.  
+The objective of SourceGit Stripdown is to progressively remove functionality from the upstream until only the following remains:
 
-```
-cd /path/to/sourcegit-stripdown/src
-dotnet build
-```
+1. A commit graph.
+1. A diff view.
