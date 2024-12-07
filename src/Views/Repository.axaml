@@ -67,15 +67,14 @@
               </ListBox.ItemsPanel>
 
               <ListBoxItem>
-                <Grid Classes="view_mode" ColumnDefinitions="32,*,Auto,Auto,Auto,Auto">
-                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Histories}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{DynamicResource Text.Histories}"/>
-                  <ToggleButton Grid.Column="2"
+                <Grid Classes="view_mode" ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+                  <TextBlock Grid.Column="0" Classes="primary" Text="{DynamicResource Text.Histories}"/>
+                  <ToggleButton Grid.Column="1"
                                 Classes="layout_direction"
                                 Width="28" Height="26"
                                 IsChecked="{Binding Source={x:Static vm:Preference.Instance}, Path=UseTwoColumnsLayoutInHistories, Mode=TwoWay}"
                                 ToolTip.Tip="{DynamicResource Text.Histories.DisplayMode}"/>
-                  <ToggleButton Grid.Column="3"
+                  <ToggleButton Grid.Column="2"
                                 Classes="line_path"
                                 Width="28" Height="26"
                                 Background="Transparent"
@@ -83,7 +82,7 @@
                                 ToolTip.Tip="{DynamicResource Text.Repository.EnableReflog}">
                     <Path Width="12" Height="12" Data="{StaticResource Icons.Reference}"/>
                   </ToggleButton>
-                  <ToggleButton Grid.Column="4"
+                  <ToggleButton Grid.Column="3"
                                 Classes="line_path"
                                 Width="28" Height="26"
                                 Background="Transparent"
@@ -91,7 +90,7 @@
                                 ToolTip.Tip="{DynamicResource Text.Repository.FirstParentFilterToggle}">
                     <Path Width="12" Height="12" Data="{StaticResource Icons.FirstParentFilter}"/>
                   </ToggleButton>
-                  <Button Grid.Column="5"
+                  <Button Grid.Column="4"
                           Classes="icon_button"
                           Width="28" Height="26"
                           Click="OnSwitchHistoriesOrderClicked"
