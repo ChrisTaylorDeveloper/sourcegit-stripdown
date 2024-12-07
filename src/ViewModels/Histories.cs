@@ -456,19 +456,6 @@ namespace SourceGit.ViewModels
                 };
                 menu.Items.Add(cherryPick);
             }
-            else
-            {
-                var revert = new MenuItem();
-                revert.Header = App.Text("CommitCM.Revert");
-                revert.Icon = App.CreateMenuIcon("Icons.Undo");
-                revert.Click += (_, e) =>
-                {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Revert(_repo, commit));
-                    e.Handled = true;
-                };
-                menu.Items.Add(revert);
-            }
 
             if (current.Head != commit.SHA)
             {
