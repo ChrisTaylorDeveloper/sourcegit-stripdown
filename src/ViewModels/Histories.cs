@@ -348,25 +348,6 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(reset);
-
-                var squash = new MenuItem();
-                squash.Header = App.Text("CommitCM.SquashCommitsSinceThis");
-                squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
-                squash.IsVisible = commit.IsMerged;
-                squash.Click += (_, e) =>
-                {
-                    if (_repo.LocalChangesCount > 0)
-                    {
-                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
-                        return;
-                    }
-
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new Squash(_repo, commit, commit.SHA));
-
-                    e.Handled = true;
-                };
-                menu.Items.Add(squash);
             }
             else
             {
@@ -386,29 +367,6 @@ namespace SourceGit.ViewModels
                     e.Handled = true;
                 };
                 menu.Items.Add(reword);
-
-                var squash = new MenuItem();
-                squash.Header = App.Text("CommitCM.Squash");
-                squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
-                squash.IsEnabled = commit.Parents.Count == 1;
-                squash.Click += (_, e) =>
-                {
-                    if (_repo.LocalChangesCount > 0)
-                    {
-                        App.RaiseException(_repo.FullPath, "You have local changes. Please run stash or discard first.");
-                        return;
-                    }
-
-                    if (commit.Parents.Count == 1)
-                    {
-                        var parent = _commits.Find(x => x.SHA == commit.Parents[0]);
-                        if (parent != null && PopupHost.CanCreatePopup())
-                            PopupHost.ShowPopup(new Squash(_repo, parent, commit.SHA));
-                    }
-
-                    e.Handled = true;
-                };
-                menu.Items.Add(squash);
             }
 
             if (!commit.IsMerged)
