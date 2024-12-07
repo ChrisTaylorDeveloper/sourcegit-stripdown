@@ -473,16 +473,6 @@ namespace SourceGit.ViewModels
             };
             menu.Items.Add(createBranch);
 
-            var createTag = new MenuItem();
-            createTag.Icon = App.CreateMenuIcon("Icons.Tag.Add");
-            createTag.Header = App.Text("CreateTag");
-            createTag.Click += (_, e) =>
-            {
-                if (PopupHost.CanCreatePopup())
-                    PopupHost.ShowPopup(new CreateTag(_repo, commit));
-                e.Handled = true;
-            };
-            menu.Items.Add(createTag);
             menu.Items.Add(new MenuItem() { Header = "-" });
 
             var archive = new MenuItem();
